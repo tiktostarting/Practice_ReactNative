@@ -7,6 +7,7 @@ import {
   StatusBar,
   TouchableOpacity,
   ActivityIndicator, 
+  Image,
 } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import {getContact} from '../services/getContact.service';
@@ -25,10 +26,11 @@ const contactList = () => {
  
   const [Data, setData] = useState('')
   const [disp, setDisp] = useState(true)
+  // const [photo, setPhoto] = useState('')
 
   useFocusEffect(useCallback(() => {
 
-    if(!Contacts.length){
+    if(!Contacts.length || !Data.length){
         getContact().then(res => {
           dispatch(InitiateContacts(res.data))
           setData(res.data)
@@ -56,11 +58,30 @@ const contactList = () => {
                     <TouchableOpacity
                       onPress={() => selectedDetails(item.id)}
                     >
-                      <View>
-                        <Text style={styles.item}>
-                          {item.firstName} {item.lastName}
-                        </Text> 
-                      </View>
+                      <View style={styles.item}>
+                        <View style={styles.rightbox}>
+                          <Text style={styles.txtlist}>
+                           {item.firstName} {item.lastName} 
+                          </Text>
+                          <Text style={styles.txtlist}>
+                            Age : {item.age} years
+                          </Text> 
+                        </View>                         
+                        <View style={styles.leftbox}>
+                          {item.photo != "N/A" ?
+                                <Image
+                                    style={styles.image}
+                                    source={{ uri: item.photo }}
+                                />                    
+                                :
+                                <Image  
+                                    style={styles.image}            
+                                    source={require('../images/noimage.png')}
+                                />
+                          }
+                        </View>
+                    </View>                    
+
                     </TouchableOpacity>
                     }
                     keyExtractor={item => item.id}
@@ -72,7 +93,7 @@ const contactList = () => {
           }
           <View style={styles.btn}>
             <TouchableOpacity onPress={AddContact}  activeOpacity={0.8}>
-              <Text style={styles.txtbtn}>Tambah Kontak</Text>
+              <Text style={styles.txtbtn}>Add Contact</Text>
             </TouchableOpacity>
           </View> 
       </View>
@@ -93,6 +114,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
 },
+image: {
+  width: 100,
+  height: 100,
+  borderRadius: 50,
+  alignItems: 'center',
+  // marginRight: 20
+},
 headerText: {
     color: 'yellow',
     fontWeight: 'bold',
@@ -106,6 +134,8 @@ headerText: {
     justifyContent: "center"
   },
     item: {
+        flex: 1,
+        flexDirection: "row",
         backgroundColor: 'green',
         padding: 30,
         marginVertical: 8,
@@ -128,10 +158,23 @@ headerText: {
       height: 50,
   },
   txtbtn: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'yellow'
+  },
+  leftbox:{
+    flex: 1,
+    alignItems: 'flex-end'
+  },
+  rightbox:{
+    flex: 1,
+    alignItems: 'flex-start'
+  },
+  txtlist:{
     fontSize: 20,
     fontWeight: 'bold',
     color: 'yellow'
-  }    
+  }
 })
 
 export default contactList;

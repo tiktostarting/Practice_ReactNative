@@ -109,20 +109,20 @@ function contactDetail(){
                     <Text style={styles.txtlst}>lastName  : {lastname}</Text>            
                 </View>
                 <View>
-                    <Text style={styles.txtlst}>Age       : {age}</Text>
+                    <Text style={styles.txtlst}>Age            : {age} years</Text>
                 </View>
             </View>
 
             <View>
                 <View>
                     <TouchableOpacity disabled={exe} onPress={UpdateContact} style={styles.btn} activeOpacity={0.8}>
-                        <Text style={styles.txtlst}>Perbaharui Contact</Text>
+                        <Text style={styles.txtlst}>Update Contact</Text>
                     </TouchableOpacity>
                 </View>   
 
                 <View>
                     <TouchableOpacity disabled={exe} onPress={deletEContact} style={styles.btndel} activeOpacity={0.8}>
-                        <Text style={styles.txtlst}>Hapus Contact</Text>
+                        <Text style={styles.txtlst}>Delete Contact</Text>
                     </TouchableOpacity>
                 </View> 
             </View>                 

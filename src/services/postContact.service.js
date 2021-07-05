@@ -5,6 +5,7 @@ const postContact = async ( contact ) => {
         const { data } = await Axios.post("https://simple-contact-crud.herokuapp.com/contact", contact)
         return data
     }catch(error){
+        console.log(error.response.data.message)
         throw error.data
     }
 }

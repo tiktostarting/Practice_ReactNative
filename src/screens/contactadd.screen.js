@@ -75,10 +75,11 @@ function addContact() {
             age: age,
             photo: imageurl
         }
+        console.log(newContact)
         postContact(newContact).then(response => {
             if(response.message === "contact saved"){
-                navigation.navigate('list_contact')
                 dispatch(AddContacts(newContact))
+                navigation.navigate('list_contact')
             }
         })
     }
@@ -141,7 +142,7 @@ function addContact() {
 
                 <View style={styles.box}>
                     <View>
-                        <Text style={styles.txtbox}>firsName</Text>
+                        <Text style={styles.txtbox}>First Name</Text>
                     </View>
                     <TextInput
                         style={styles.input}
@@ -152,7 +153,7 @@ function addContact() {
 
                 <View style={styles.box}>             
                     <View>
-                        <Text style={styles.txtbox}>lastName</Text>
+                        <Text style={styles.txtbox}>Last Name</Text>
                     </View>
                     <TextInput
                         style={styles.input}
@@ -177,14 +178,14 @@ function addContact() {
 
             <View>
                 <View>
-                    <TouchableOpacity disabled={lanjut} onPress={() => chooseFile()} style={styles.btn} activeOpacity={0.8}>
-                        <Text style={styles.txtbtn}>{status === 'update' ? 'SAVE' : 'ADD'} Pict</Text>
+                    <TouchableOpacity disabled={lanjut} onPress={chooseFile} style={styles.btn} activeOpacity={0.8}>
+                        <Text style={styles.txtbtn}>{status === 'update' ? 'CHANGE' : 'ADD'} PICTURE</Text>
                     </TouchableOpacity>
                 </View>   
 
                 <View>
-                    <TouchableOpacity disabled={lanjut} onPress={() => validation()} style={styles.btn} activeOpacity={0.8}>
-                        <Text style={styles.txtbtn}>{status === 'update' ? 'SAVE' : 'ADD'} Kontak</Text>
+                    <TouchableOpacity disabled={lanjut} onPress={validation} style={styles.btn} activeOpacity={0.8}>
+                        <Text style={styles.txtbtn}>{status === 'update' ? 'CHANGE' : 'SAVE'} CONTACT</Text>
                     </TouchableOpacity>
                 </View> 
             </View>     
