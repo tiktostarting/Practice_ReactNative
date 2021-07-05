@@ -62,8 +62,6 @@ function contactDetail(){
 
     useEffect(() => {
         getContactId(route.params).then(res => {
-            console.log(route.params)
-            console.log(res)
             setFirstname(res.data.firstName)
             setLastname(res.data.lastName)
             const age = res.data.age

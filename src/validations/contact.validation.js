@@ -1,17 +1,23 @@
 function contactValidation(firstname, lastname, age, imageurl){
+ 
+    let arr = []
+
     if(!firstname.length){
-        return("firstname can't be empty")
+        arr.push('firstname')
     }
     if(!lastname.length){
-        return("lastName can't be empty")
+        arr.push('lastname')
     }
     if(!imageurl.length){
-        return("must upload image !")
+        arr.push('image')
     }
     if(!age.length){
-        return("age can't be empty")
-    }else{
+        arr.push('age')
+    }
+    if(!arr.length){
         return ''
+    }else{
+        return `${arr} can't be empty`
     }
 }
 

@@ -21,7 +21,6 @@ function addContact() {
     const [lanjut, setLanjut] = useState(false);
     const [photo, setPhoto] = useState('N/A');   
     const contacts = useSelector((state) => state.ContactReducer)
-    console.log(contacts)
 
     const navigation = useNavigation();
     const route = useRoute();
@@ -38,8 +37,6 @@ function addContact() {
             setImageurl(contactTarget.photo)
             setPhoto(contactTarget.photo)
             setStatus(route.params.msg)
-            console.log(route.params.msg)
-            console.log(status)
         }
     },[route.params])
 
@@ -47,11 +44,8 @@ function addContact() {
 
         let messageError = contactValidation(firstname, lastname, age, imageurl)
         if(!messageError && status === 'update'){
-            console.log(firstname, lastname, age)
-            console.log('masuk')
             navigateAndupdate()
         }else if(!messageError){
-            console.log(firstname, lastname, age)
             navigateAndadd()
         }else{
             ToastAndroid.show(messageError, ToastAndroid.LONG);
@@ -61,7 +55,6 @@ function addContact() {
     const chooseFile = (type) => {
         setLanjut(true)
         launchImageLibrary({}, async (response) => {
-            console.log("=================>", response)
             if(response && response.assets){
                 const asset = response.assets[0]
                 const reference = storage().ref(`/photos/${asset.fileName}`);
@@ -82,7 +75,6 @@ function addContact() {
             age: age,
             photo: imageurl
         }
-        console.log("AAAAAAAAAA>",newContact)
         postContact(newContact).then(response => {
             if(response.message === "contact saved"){
                 navigation.navigate('list_contact')
@@ -98,9 +90,7 @@ function addContact() {
             age: age,
             photo: imageurl
         }
-        console.log("BBBBBBBBBB>",newContact)
         putContact(newContact, id).then(response => {
-            console.log(response.message)
             if(response.message === "Contact edited"){
                 navigation.navigate('list_contact')
             }

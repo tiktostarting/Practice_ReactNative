@@ -26,19 +26,15 @@ const contactList = () => {
   const [Data, setData] = useState('')
   const [disp, setDisp] = useState(true)
 
-  console.log(Data)
-  
   useFocusEffect(useCallback(() => {
 
     if(!Contacts.length){
         getContact().then(res => {
           dispatch(InitiateContacts(res.data))
           setData(res.data)
-          console.log(res.data)
         })
-        setDisp(false)
       }
-      console.log(Contacts)
+      setDisp(false)      
     }, [Contacts]))
 
     function selectedDetails(id){
@@ -48,6 +44,11 @@ const contactList = () => {
     return (
 
       <View style={styles.container}>
+
+            <View style={styles.header}>
+                <Text style={styles.headerText}>Contact List</Text>                
+            </View>
+
           {disp == false? 
             <FlatList
                     data={Data}
@@ -65,9 +66,9 @@ const contactList = () => {
                     keyExtractor={item => item.id}
             />
             :
-            <View style={styles.progres}>
-              <ActivityIndicator size="large" color="#0000ff" />
-            </View>           
+              <View style={styles.progres}>
+                <ActivityIndicator size="large" color="#0000ff" />
+              </View>           
           }
           <View style={styles.btn}>
             <TouchableOpacity onPress={AddContact}  activeOpacity={0.8}>
@@ -79,9 +80,26 @@ const contactList = () => {
 }
 
 const styles = StyleSheet.create({
+  header: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginBottom: 10,
+    height: 50,
+    borderBottomStartRadius:30,
+    borderBottomEndRadius:30,
+    backgroundColor: 'green',
+    color: 'white',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+},
+headerText: {
+    color: 'yellow',
+    fontWeight: 'bold',
+    fontSize: 20
+},  
   container:{
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
   },   
   progres:{
     flex: 1,

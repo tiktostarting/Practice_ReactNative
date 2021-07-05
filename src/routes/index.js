@@ -6,10 +6,10 @@ function Routes(){
     const Stack = createStackNavigator();
 
     return(
-        <Stack.Navigator initalRouteName='list_contact' screenOptions={{HeaderShown: false}}>
-            <Stack.Screen name='list_contact' component={screen.contactList}  screenOptions={{HeaderShown: false}}/>
-            <Stack.Screen name='add_contact' component={screen.contactAdd}  screenOptions={{HeaderShown: false}}/>
-            <Stack.Screen name='contact_detail' component={screen.contactDetail}  screenOptions={{HeaderShown: false}}/>
+        <Stack.Navigator initalRouteName='list_contact'   screenOptions={{headerShown: false}}>
+            <Stack.Screen name='list_contact' component={screen.contactList}/>
+            <Stack.Screen name='add_contact' component={screen.contactAdd}/>
+            <Stack.Screen name='contact_detail' component={screen.contactDetail}/>
         </Stack.Navigator>
     )
 }
