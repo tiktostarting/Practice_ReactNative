@@ -5,8 +5,6 @@ const InitiateContacts = (contacts) => {
     }
 }
 
-//////Pengerjaan Next Step
-
 const AddContacts = (contacts) => {
     return{
         type: 'ADD_CONTACTS',

@@ -20,17 +20,18 @@ const contactList = () => {
   const Contacts = useSelector((state) => state.ContactReducer)
   const navigation = useNavigation()
 
+  console.log(Contacts)
+
   function AddContact() {
     navigation.navigate('add_contact')
   }
  
   const [Data, setData] = useState('')
   const [disp, setDisp] = useState(true)
-  // const [photo, setPhoto] = useState('')
 
   useFocusEffect(useCallback(() => {
 
-    if(!Contacts.length || !Data.length){
+    if( !Contacts.length || !Data.length ){
         getContact().then(res => {
           dispatch(InitiateContacts(res.data))
           setData(res.data)

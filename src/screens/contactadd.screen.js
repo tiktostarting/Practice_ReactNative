@@ -8,7 +8,7 @@ import { useRoute } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux';
 import {launchImageLibrary} from 'react-native-image-picker'
 import storage from '@react-native-firebase/storage'
-import {AddContacts} from '../redux/contact.action'
+import {AddContacts, UpdateContacts} from '../redux/contact.action'
 
 function addContact() {
 
@@ -63,8 +63,8 @@ function addContact() {
                 const url = await reference.getDownloadURL();
                 setImageurl(url)
                 setPhoto(url)
-                setLanjut(false)
             }
+        setLanjut(false)            
         })
     }
     
@@ -75,7 +75,6 @@ function addContact() {
             age: age,
             photo: imageurl
         }
-        console.log(newContact)
         postContact(newContact).then(response => {
             if(response.message === "contact saved"){
                 dispatch(AddContacts(newContact))
@@ -93,6 +92,7 @@ function addContact() {
         }
         putContact(newContact, id).then(response => {
             if(response.message === "Contact edited"){
+                dispatch(UpdateContacts(newContact))
                 navigation.navigate('list_contact')
             }
         })
@@ -185,7 +185,7 @@ function addContact() {
 
                 <View>
                     <TouchableOpacity disabled={lanjut} onPress={validation} style={styles.btn} activeOpacity={0.8}>
-                        <Text style={styles.txtbtn}>{status === 'update' ? 'CHANGE' : 'SAVE'} CONTACT</Text>
+                        <Text style={styles.txtbtn}>{status === 'update' ? 'UPDATE' : 'SAVE'} CONTACT</Text>
                     </TouchableOpacity>
                 </View> 
             </View>     

@@ -103,13 +103,13 @@ function contactDetail(){
 
             <View style={styles.item}>
                 <View>
-                    <Text style={styles.txtlst}>firstName : {firstname}</Text>
+                    <Text style={styles.txtlst}>First Name : {firstname}</Text>
                 </View>
                 <View>
-                    <Text style={styles.txtlst}>lastName  : {lastname}</Text>            
+                    <Text style={styles.txtlst}>Last Name  : {lastname}</Text>            
                 </View>
                 <View>
-                    <Text style={styles.txtlst}>Age            : {age} years</Text>
+                    <Text style={styles.txtlst}>Age             : {age} years</Text>
                 </View>
             </View>
 
