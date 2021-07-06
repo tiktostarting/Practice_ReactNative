@@ -8,6 +8,7 @@ import { useRoute } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux';
 import {launchImageLibrary} from 'react-native-image-picker'
 import storage from '@react-native-firebase/storage'
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {AddContacts, UpdateContacts} from '../redux/contact.action'
 
 function addContact() {
@@ -17,7 +18,7 @@ function addContact() {
     const [lastname, setLastname] = useState('');
     const [status, setStatus] = useState('create')
     const [age, setAge] = useState('');
-    const [imageurl, setImageurl] = useState();
+    const [imageurl, setImageurl] = useState('');
     const [lanjut, setLanjut] = useState(false);
     const [photo, setPhoto] = useState('N/A');   
     const contacts = useSelector((state) => state.ContactReducer)
@@ -110,86 +111,105 @@ function addContact() {
         setAge(age)
     }
 
+    function backtoList(){
+        if(status === 'update'){
+            navigation.navigate('contact_detail',id)
+        }else{
+            navigation.navigate('list_contact')
+        }
+
+    }
+
     return(
         <ScrollView>
-            <View style={styles.main}>
-
-                <View style={styles.header}>
-                    <Text style={styles.headerText}>Contact Form</Text>
-                </View>
-
-                <View>
-                {lanjut == false ?
-                    <View>
-                        {photo != "N/A" ?
-                            <Image
-                                style={styles.image}
-                                source={{ uri: photo }}
-                            />                    
-                            :
-                            <Image  
-                                style={styles.image}            
-                                source={require('../images/noimage.png')}
-                            />
-                        }
-                    </View>
-                    :
-                    <View style={styles.container}>
-                        <ActivityIndicator size="large" color="#0000ff" />
-                    </View>                     
-                }    
-                </View>                
-
-                <View style={styles.box}>
-                    <View>
-                        <Text style={styles.txtbox}>First Name</Text>
-                    </View>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText = {handleFirstname}
-                        value={firstname}
-                    />
-                </View>                
-
-                <View style={styles.box}>             
-                    <View>
-                        <Text style={styles.txtbox}>Last Name</Text>
-                    </View>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText = {handleLastname}
-                        value={lastname}
-                    />
-                </View>                
-
-                <View style={styles.box}>
-                    <View>
-                        <Text style={styles.txtbox}>Age</Text>
-                    </View>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText = {handleAge}
-                        value = {age}
-                        placeholder="Umur"
-                        keyboardType="numeric"
-                    />
-                </View>
+            <View style={styles.header}>
+                <Text style={styles.headerText}>Contact Form</Text>
             </View>
 
+            <ScrollView >
+                <View style={styles.main}>
+
+                    <View>
+                        {lanjut == false ?
+                            <View>
+                                <TouchableOpacity disabled={lanjut} onPress={chooseFile} activeOpacity={0.8}>
+                                    {photo != "N/A" ?
+                                        <Image
+                                            style={styles.image}
+                                            source={{ uri: photo }}
+                                        />                   
+                                        :
+                                        <Image  
+                                            style={styles.image}            
+                                            source={require('../images/noimage.png')}
+                                        />
+                                    }
+                                    <Text style={styles.txtpic}> CHOOSE </Text>
+                                </TouchableOpacity>
+                            </View>
+                            :
+                            <View style={styles.container}>
+                                <ActivityIndicator size="large" color="#0000ff" />
+                            </View>                     
+                        }    
+                    </View>                
+
+                    <View style={styles.box}>
+                        <View>
+                            <Text style={styles.txtbox}>First Name</Text>
+
+                            <TextInput
+                                style={styles.input}
+                                onChangeText = {handleFirstname}
+                                value={firstname}
+                                placeholder="min 3 and max 30 char"
+                            />
+                        </View>
+                    </View>                
+
+                    <View style={styles.box}>             
+                        <View>
+                            <Text style={styles.txtbox}>Last Name</Text>
+                        </View>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText = {handleLastname}
+                            value={lastname}
+                            placeholder="min 3 and max 30 char"
+                        />
+                    </View>                
+
+                    <View style={styles.box}>
+                        <View>
+                            <Text style={styles.txtbox}>Age</Text>
+                        </View>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText = {handleAge}
+                            value = {age}
+                            placeholder="number only"
+                            keyboardType="numeric"
+                        />
+                    </View>
+                </View>            
+            </ScrollView> 
             <View>
                 <View>
-                    <TouchableOpacity disabled={lanjut} onPress={chooseFile} style={styles.btn} activeOpacity={0.8}>
-                        <Text style={styles.txtbtn}>{status === 'update' ? 'CHANGE' : 'ADD'} PICTURE</Text>
+                    <TouchableOpacity disabled={lanjut} onPress={validation} style={styles.btn} activeOpacity={0.8}>
+                        <Icon   
+                            name="save"
+                            size={30} 
+                            color="white"
+                        />
                     </TouchableOpacity>
                 </View>   
-
                 <View>
-                    <TouchableOpacity disabled={lanjut} onPress={validation} style={styles.btn} activeOpacity={0.8}>
-                        <Text style={styles.txtbtn}>{status === 'update' ? 'UPDATE' : 'SAVE'} CONTACT</Text>
+                    <TouchableOpacity disabled={lanjut} onPress={backtoList} style={styles.btnback} activeOpacity={0.8}>
+                        <Text style={styles.txtbtn}>C</Text>
                     </TouchableOpacity>
-                </View> 
-            </View>     
-
+                </View>                    
+            </View>
+  
         </ScrollView>
     )
 }
@@ -215,15 +235,17 @@ const styles = StyleSheet.create({
     },    
     box: {
         backgroundColor: 'green',
-        padding: 30,
-        marginVertical: 8,
+        padding: 10,
+        marginVertical: 5,
         marginHorizontal: 15,
         fontSize: 22,
         borderRadius: 12,
         color: 'yellow'
     },   
     txtbox: {
-        fontSize: 20,
+        marginBottom: 6,
+        marginHorizontal: 5,
+        fontSize: 14,
         color: 'white',
         fontWeight: 'bold',
     }, 
@@ -241,13 +263,13 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     headerText: {
-        color: 'yellow',
+        color: 'white',
         fontWeight: 'bold',
         fontSize: 20
     },
     input: {
         height: 40,
-        margin: 12,
+        marginHorizontal: 5,
         borderWidth: 0,
         backgroundColor: 'white',
         borderRadius: 12,
@@ -270,11 +292,32 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 8,
         width: 250,
-        height: 40
+        height: 60
+    },
+    btnback: {
+        alignItems: 'center',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        marginVertical: 10,
+        elevation: 8,
+        backgroundColor: "red",
+        borderRadius: 12,
+        paddingVertical: 10,
+        paddingHorizontal: 8,
+        width: 250,
+        height: 60
     },
     txtbtn: {
+        color: 'white',
+        fontSize: 30,
+        fontWeight: 'bold'
+    },
+    txtpic: {
+        position: 'absolute', 
+        alignSelf: 'center', 
         color: 'yellow',
-        fontSize: 18,
+        fontWeight: 'bold',
+        backgroundColor: 'grey'
     }
 })
 

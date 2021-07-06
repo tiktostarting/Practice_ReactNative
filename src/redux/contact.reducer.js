@@ -13,13 +13,17 @@ const ContactReducer = (state = [], action) => {
                     contact.lastName = action.data.lastName
                     contact.photo = action.data.photo
                 }
+                console.log('isi dari contact ==>',contact)
                 return contact
             })
+            console.log('isi dari newContacts ==>',newContacts)
             return newContacts
         case 'DELETE_CONTACTS' :
             const contactsBefore = [...state]
             const contactsAfter = contactsBefore.filter( contact => contact.id != action.data.id)
             return contactsAfter
+        case 'CLEAR_CONTACTS' :
+            return []
         default:
             return state
     }

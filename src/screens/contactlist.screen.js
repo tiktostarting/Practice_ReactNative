@@ -4,23 +4,21 @@ import {
   FlatList, 
   StyleSheet, 
   Text, 
-  StatusBar,
   TouchableOpacity,
   ActivityIndicator, 
   Image,
 } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {getContact} from '../services/getContact.service';
 import { useDispatch, useSelector } from 'react-redux';
-import { InitiateContacts } from '../redux/contact.action';
+import { InitiateContacts, ClearContacts } from '../redux/contact.action';
   
 const contactList = () => {
 
   const dispatch = useDispatch()
   const Contacts = useSelector((state) => state.ContactReducer)
   const navigation = useNavigation()
-
-  console.log(Contacts)
 
   function AddContact() {
     navigation.navigate('add_contact')
@@ -30,18 +28,21 @@ const contactList = () => {
   const [disp, setDisp] = useState(true)
 
   useFocusEffect(useCallback(() => {
-
-    if( !Contacts.length || !Data.length ){
-        getContact().then(res => {
+    if( !Contacts.length ){    
+      getContact().then(res => {
           dispatch(InitiateContacts(res.data))
           setData(res.data)
         })
       }
-      setDisp(false)      
+        setDisp(false)      
     }, [Contacts]))
 
     function selectedDetails(id){
       navigation.navigate('contact_detail',id)
+    }
+
+    function refreshList(){
+      dispatch(ClearContacts())
     }
   
     return (
@@ -60,16 +61,16 @@ const contactList = () => {
                       onPress={() => selectedDetails(item.id)}
                     >
                       <View style={styles.item}>
-                        <View style={styles.rightbox}>
+                        <View style={styles.leftbox}>
                           <Text style={styles.txtlist}>
                            {item.firstName} {item.lastName} 
                           </Text>
                           <Text style={styles.txtlist}>
-                            Age : {item.age} years
+                              {item.age} years old
                           </Text> 
                         </View>                         
-                        <View style={styles.leftbox}>
-                          {item.photo != "N/A" ?
+                        <View style={styles.rightbox}>
+                          {item.photo != "N/A" || !item.photo ?
                                 <Image
                                     style={styles.image}
                                     source={{ uri: item.photo }}
@@ -92,10 +93,26 @@ const contactList = () => {
                 <ActivityIndicator size="large" color="#0000ff" />
               </View>           
           }
-          <View style={styles.btn}>
-            <TouchableOpacity onPress={AddContact}  activeOpacity={0.8}>
-              <Text style={styles.txtbtn}>Add Contact</Text>
-            </TouchableOpacity>
+          <View style={styles.fitbtn}>
+            <View style={styles.btn}>
+              <TouchableOpacity onPress={AddContact} style={styles.addbtn} disabled={disp} activeOpacity={0.8}>
+                {/* <Text style={styles.txtbtn}>Add Contact</Text> */}
+                <Icon   
+                        name="plus"
+                        size={30} 
+                        color="white"
+                    />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.btn}>
+              <TouchableOpacity onPress={refreshList} style={styles.rldbtn} disabled={disp} activeOpacity={0.8}>
+                <Icon   
+                        name="refresh"
+                        size={30} 
+                        color="white"
+                    />
+              </TouchableOpacity>              
+            </View>
           </View> 
       </View>
     );
@@ -123,7 +140,7 @@ image: {
   // marginRight: 20
 },
 headerText: {
-    color: 'yellow',
+    color: 'white',
     fontWeight: 'bold',
     fontSize: 20
 },  
@@ -138,24 +155,23 @@ headerText: {
         flex: 1,
         flexDirection: "row",
         backgroundColor: 'green',
-        padding: 30,
-        marginVertical: 8,
-        marginHorizontal: 15,
+        padding: 7,
+        marginVertical: 4,
+        marginHorizontal: 16,
         fontSize: 22,
         borderRadius: 10,
         color: 'yellow'
     },
     btn: {
-      alignItems: 'center',
+      // alignItems: 'center',
       alignSelf: 'center',
       justifyContent: 'center',
       marginVertical: 10,
+      marginHorizontal: 0,
       elevation: 8,
-      backgroundColor: "green",
-      borderRadius: 12,
       paddingVertical: 8,
-      paddingHorizontal: 8,
-      width: 250,
+      paddingHorizontal: 0,
+      // width: 80,
       height: 50,
   },
   txtbtn: {
@@ -163,18 +179,42 @@ headerText: {
     fontWeight: 'bold',
     color: 'yellow'
   },
-  leftbox:{
-    flex: 1,
-    alignItems: 'flex-end'
-  },
   rightbox:{
     flex: 1,
-    alignItems: 'flex-start'
+    alignItems: 'center'
+  },
+  leftbox:{
+    flex: 1,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    textAlign: 'center'
   },
   txtlist:{
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'yellow'
+    color: 'white'
+  },
+  addbtn:{
+    alignItems: 'center',
+    marginHorizontal: 15,
+    width: 170,
+    height: 50,
+    backgroundColor: 'green',
+    borderRadius: 12,
+    justifyContent: 'center',
+  },
+  rldbtn:{
+    alignItems: 'center',
+    marginHorizontal: 15,
+    width: 170,
+    height: 50,
+    backgroundColor: 'blue',
+    borderRadius: 12,
+    justifyContent: 'center',
+  },
+  fitbtn:{
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   }
 })
 

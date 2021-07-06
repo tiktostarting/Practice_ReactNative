@@ -26,4 +26,11 @@ const DeleteContacts = (contacts) => {
     }
 }
 
-export {InitiateContacts, AddContacts, UpdateContacts, DeleteContacts}
+const ClearContacts = () => {
+    return{
+        type: 'CLEAR_CONTACTS',
+        data: []
+    }
+}
+
+export {InitiateContacts, AddContacts, UpdateContacts, DeleteContacts, ClearContacts}
