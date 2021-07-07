@@ -27,17 +27,18 @@ const contactList = () => {
   }
  
   const [Data, setData] = useState('')
-  const [disp, setDisp] = useState(true)
+  const [disp, setDisp] = useState()
 
   useFocusEffect(useCallback(() => {
+    setDisp(true)
     if(!Contacts.length){    
       getContact().then(res => {
           dispatch(InitiateContacts(res.data))
           setData(res.data)
           console.log("keluar")
+          setDisp(false)
         })
       }
-      setDisp(false)      
   }, [Contacts]))
 
   // useEffect(() => {
