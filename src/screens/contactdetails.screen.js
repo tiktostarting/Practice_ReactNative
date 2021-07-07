@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {View,Text, StyleSheet, Image, ActivityIndicator, TouchableOpacity, Alert, ToastAndroid} from 'react-native'
+import {View,Text, StyleSheet, Image, ActivityIndicator, TouchableOpacity, Alert, ToastAndroid, ScrollView} from 'react-native'
 import { useRoute } from '@react-navigation/native'
 import {getContactId} from '../services/getContact.service'
 import { useNavigation } from '@react-navigation/native'
@@ -79,8 +79,7 @@ function contactDetail(){
     }, [route.params])
 
     return(
-        <View>
-
+        <ScrollView>
             <View style={styles.header}>
                 <Text style={styles.headerText}>Contact Detail</Text>                
             </View>
@@ -150,7 +149,7 @@ function contactDetail(){
                         </View> 
                 }                   
             </View>
-        </View>
+        </ScrollView>
     )
 }
 

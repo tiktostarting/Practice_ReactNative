@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {launchImageLibrary} from 'react-native-image-picker'
 import storage from '@react-native-firebase/storage'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {AddContacts, UpdateContacts} from '../redux/contact.action'
+import {AddContacts, UpdateContacts, ClearContacts } from '../redux/contact.action'
 
 function addContact() {
 
@@ -44,6 +44,7 @@ function addContact() {
     function validation(){
 
         let messageError = contactValidation(firstname, lastname, age, imageurl)
+        dispatch(ClearContacts())
         if(!messageError && status === 'update'){
             navigateAndupdate()
         }else if(!messageError){
@@ -112,12 +113,12 @@ function addContact() {
     }
 
     function backtoList(){
-        if(status === 'update'){
-            navigation.navigate('contact_detail',id)
-        }else{
-            navigation.navigate('list_contact')
-        }
-
+        navigation.navigate('list_contact')
+        // if(status === 'update'){
+        //     navigation.navigate('contact_detail',id)
+        // }else{
+        //     navigation.navigate('list_contact')
+        // }
     }
 
     return(

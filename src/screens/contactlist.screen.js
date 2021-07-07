@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator, 
   Image,
+  useWindowDimensions,
 } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -19,6 +20,7 @@ const contactList = () => {
   const dispatch = useDispatch()
   const Contacts = useSelector((state) => state.ContactReducer)
   const navigation = useNavigation()
+  const width = useWindowDimensions().width
 
   function AddContact() {
     navigation.navigate('add_contact')
@@ -28,14 +30,21 @@ const contactList = () => {
   const [disp, setDisp] = useState(true)
 
   useFocusEffect(useCallback(() => {
-    if( !Contacts.length ){    
+    if(!Contacts.length){    
       getContact().then(res => {
           dispatch(InitiateContacts(res.data))
           setData(res.data)
         })
       }
-        setDisp(false)      
-    }, [Contacts]))
+      setDisp(false)      
+  }, [Contacts]))
+
+  // useEffect(() => {
+  //     getContact().then(res => {
+  //       dispatch(InitiateContacts(res.data))
+  //       setData(res.data)
+  //     })
+  // }, [Data])
 
     function selectedDetails(id){
       navigation.navigate('contact_detail',id)
