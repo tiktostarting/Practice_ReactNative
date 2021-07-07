@@ -27,11 +27,10 @@ const contactList = () => {
   }
  
   const [Data, setData] = useState('')
-  const [disp, setDisp] = useState()
+  const [disp, setDisp] = useState(true)
 
   useFocusEffect(useCallback(() => {
-    setDisp(true)
-    if(!Contacts.length){    
+    if(!Contacts.length || !Data.length){    
       getContact().then(res => {
           dispatch(InitiateContacts(res.data))
           setData(res.data)
