@@ -34,6 +34,7 @@ const contactList = () => {
       getContact().then(res => {
           dispatch(InitiateContacts(res.data))
           setData(res.data)
+          console.log("keluar")
         })
       }
       setDisp(false)      
@@ -53,7 +54,7 @@ const contactList = () => {
     function refreshList(){
       dispatch(ClearContacts())
     }
-  
+    
     return (
 
       <View style={styles.container}>
@@ -62,7 +63,7 @@ const contactList = () => {
                 <Text style={styles.headerText}>Contact List</Text>                
             </View>
 
-          {disp == false? 
+          {!disp ? 
             <FlatList
                     data={Data}
                     renderItem={({ item }) => 
@@ -91,8 +92,7 @@ const contactList = () => {
                                 />
                           }
                         </View>
-                    </View>                    
-
+                      </View>                    
                     </TouchableOpacity>
                     }
                     keyExtractor={item => item.id}
