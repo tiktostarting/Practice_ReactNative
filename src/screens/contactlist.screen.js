@@ -34,18 +34,10 @@ const contactList = () => {
       getContact().then(res => {
           dispatch(InitiateContacts(res.data))
           setData(res.data)
-          console.log("keluar")
           setDisp(false)
         })
       }
   }, [Contacts]))
-
-  // useEffect(() => {
-  //     getContact().then(res => {
-  //       dispatch(InitiateContacts(res.data))
-  //       setData(res.data)
-  //     })
-  // }, [Data])
 
     function selectedDetails(id){
       navigation.navigate('contact_detail',id)

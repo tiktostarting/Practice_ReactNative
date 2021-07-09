@@ -1,8 +1,6 @@
 function contactValidation(firstname, lastname, age, imageurl){
  
     let arr = []
-    let regEx = /^[0-9a-zA-Z]+$/;
-    let regNum = /^[0-9]+$/
 
     if(!firstname.length){
         arr.push('firstname')
@@ -31,6 +29,10 @@ function contactValidation(firstname, lastname, age, imageurl){
         return "lastname name less than 3"
     }else if(lastname.length > 30 ){
         return "last name more than 30"
+    }
+
+    if(age > 100){
+        return "age must be under 100 years old"
     }
     
     if(!arr.length){
