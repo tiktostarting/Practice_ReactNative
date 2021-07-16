@@ -1,5 +1,5 @@
 import contactList from "./contactlist.screen";
-import contactAdd from "./contactadd.screen";
+import formContact from "./contactadd.screen";
 import contactDetail from "./contactdetails.screen";
 
-export {contactList, contactAdd, contactDetail} 
+export {contactList, formContact, contactDetail} 

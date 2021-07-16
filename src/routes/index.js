@@ -8,7 +8,7 @@ function Routes(){
     return(
         <Stack.Navigator initalRouteName='list_contact'   screenOptions={{headerShown: false}}>
             <Stack.Screen name='list_contact' component={screen.contactList}/>
-            <Stack.Screen name='add_contact' component={screen.contactAdd}/>
+            <Stack.Screen name='add_contact' component={screen.formContact}/>
             <Stack.Screen name='contact_detail' component={screen.contactDetail}/>
         </Stack.Navigator>
     )

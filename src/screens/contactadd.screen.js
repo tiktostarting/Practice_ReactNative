@@ -1,17 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import React,{useEffect, useState} from 'react';
 import { View, StyleSheet, TextInput, ScrollView , StatusBar, Text, ToastAndroid, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
-import postContact from '../services/postContact.service';
-import putContact from '../services/putContact.service';
+import { addContact } from '../services/contactlist.service';
 import contactValidation from '../validations/contact.validation';
 import { useRoute } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux';
 import {launchImageLibrary} from 'react-native-image-picker'
 import storage from '@react-native-firebase/storage'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {AddContacts, UpdateContacts, ClearContacts } from '../redux/contact.action'
+import { UpdateContact, ClearContacts} from '../redux/actions/contact.action';
 
-function addContact() {
+function formContact() {
 
     const [id, setId] = useState('')
     const [firstname, setFirstname] = useState('');
@@ -21,7 +20,8 @@ function addContact() {
     const [imageurl, setImageurl] = useState('');
     const [lanjut, setLanjut] = useState(false);
     const [photo, setPhoto] = useState('N/A');   
-    const contacts = useSelector((state) => state.ContactReducer)
+    const contacts = useSelector((state) => state.contactReducer.data)
+    const error = useSelector(state => state.contactReducer.error)
 
     const navigation = useNavigation();
     const route = useRoute();
@@ -42,7 +42,6 @@ function addContact() {
     },[route.params])
 
     function validation(){
-
         let messageError = contactValidation(firstname, lastname, age, imageurl)
         dispatch(ClearContacts())
         if(!messageError && status === 'update'){
@@ -77,12 +76,12 @@ function addContact() {
             age: age,
             photo: imageurl
         }
-        postContact(newContact).then(response => {
+        addContact(newContact).then(response => {
             if(response.message === "contact saved"){
-                dispatch(AddContacts(newContact))
                 navigation.navigate('list_contact')
             }
         })
+        navigation.navigate('list_contact')
     }
 
     function navigateAndupdate(){
@@ -92,12 +91,13 @@ function addContact() {
             age: age,
             photo: imageurl
         }
-        putContact(newContact, id).then(response => {
-            if(response.message === "Contact edited"){
-                dispatch(UpdateContacts(newContact))
-                navigation.navigate('list_contact')
-            }
-        })
+        if(error) {
+            ToastAndroid.show(error, ToastAndroid.LONG)
+            setLanjut(false)
+        } else {
+            dispatch(UpdateContact(newContact, id))
+            navigation.navigate('list_contact')
+        }
     }
 
     const handleFirstname = (text) =>{
@@ -322,4 +322,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default addContact
+export default formContact

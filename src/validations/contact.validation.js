@@ -4,10 +4,14 @@ function contactValidation(firstname, lastname, age, imageurl){
 
     if(!firstname.length){
         arr.push('firstname')
+    }else if(!firstname.match(/^[0-9a-zA-Z]+$/)){
+        return "first name just accept alphanumeric"
     }
 
     if(!lastname.length){
         arr.push('lastname')
+    }else if(!lastname.match(/^[0-9a-zA-Z]+$/)){
+        return "last name just accept alphanumeric"
     }
 
     if(!imageurl.length){
@@ -28,15 +32,7 @@ function contactValidation(firstname, lastname, age, imageurl){
         return "lastname name less than 3"
     }else if(lastname.length > 30 ){
         return "last name more than 30"
-    }
-
-    if(!firstname.match(/^[0-9a-zA-Z]+$/)){
-        return "first name just accept alphanumeric"
-    }
-
-    if(!lastname.match(/^[0-9a-zA-Z]+$/)){
-        return "last name just accept alphanumeric"
-    }    
+    } 
 
     if(age > 100){
         return "age must be under 100 years old"

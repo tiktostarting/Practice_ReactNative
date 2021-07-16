@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { 
   View, 
   FlatList, 
@@ -7,37 +7,30 @@ import {
   TouchableOpacity,
   ActivityIndicator, 
   Image,
-  useWindowDimensions,
 } from 'react-native';
-import { useNavigation, useFocusEffect } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {getContact} from '../services/getContact.service';
 import { useDispatch, useSelector } from 'react-redux';
-import { InitiateContacts, ClearContacts } from '../redux/contact.action';
+import { ClearContacts, InitiateContacts } from '../redux/actions/contact.action';
   
 const contactList = () => {
 
   const dispatch = useDispatch()
-  const Contacts = useSelector((state) => state.ContactReducer)
   const navigation = useNavigation()
-  const width = useWindowDimensions().width
 
+  const data = useSelector(state => state.contactReducer.data)
+  const loading = useSelector(state => state.contactReducer.loading)
+  const error = useSelector(state => state.contactReducer.error)
+  
   function AddContact() {
     navigation.navigate('add_contact')
   }
  
-  const [Data, setData] = useState('')
-  const [disp, setDisp] = useState(true)
-
-  useFocusEffect(useCallback(() => {
-    if(!Contacts.length || !Data.length){    
-      getContact().then(res => {
-          dispatch(InitiateContacts(res.data))
-          setData(res.data)
-          setDisp(false)
-        })
-      }
-  }, [Contacts]))
+  useEffect(() => {
+    if(!data.length){
+      dispatch(InitiateContacts())
+    }
+  }, [data])
 
     function selectedDetails(id){
       navigation.navigate('contact_detail',id)
@@ -55,9 +48,13 @@ const contactList = () => {
                 <Text style={styles.headerText}>Contact List</Text>                
             </View>
 
-          {!disp ? 
+            {/* <View>
+                {error ? <Text>{error}</Text> : null}
+            </View> */}
+
+          {!loading ? 
             <FlatList
-                    data={Data}
+                    data={data}
                     renderItem={({ item }) => 
                     <TouchableOpacity
                       onPress={() => selectedDetails(item.id)}
@@ -96,7 +93,7 @@ const contactList = () => {
           }
           <View style={styles.fitbtn}>
             <View style={styles.btn}>
-              <TouchableOpacity onPress={AddContact} style={styles.addbtn} disabled={disp} activeOpacity={0.8}>
+              <TouchableOpacity onPress={AddContact} style={styles.addbtn} disabled={loading} activeOpacity={0.8}>
                 {/* <Text style={styles.txtbtn}>Add Contact</Text> */}
                 <Icon   
                         name="plus"
@@ -106,7 +103,7 @@ const contactList = () => {
               </TouchableOpacity>
             </View>
             <View style={styles.btn}>
-              <TouchableOpacity onPress={refreshList} style={styles.rldbtn} disabled={disp} activeOpacity={0.8}>
+              <TouchableOpacity onPress={refreshList} style={styles.rldbtn} disabled={loading} activeOpacity={0.8}>
                 <Icon   
                         name="refresh"
                         size={30} 

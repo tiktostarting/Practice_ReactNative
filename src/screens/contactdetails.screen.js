@@ -1,20 +1,16 @@
 import React, {useEffect, useState} from 'react'
 import {View,Text, StyleSheet, Image, ActivityIndicator, TouchableOpacity, Alert, ToastAndroid, ScrollView} from 'react-native'
 import { useRoute } from '@react-navigation/native'
-import {getContactId} from '../services/getContact.service'
+import {getContactDetail} from '../services/contactlist.service'
 import { useNavigation } from '@react-navigation/native'
-import deleteContact from '../services/deleteContact.service'
 import { useDispatch, useSelector } from 'react-redux';
-import { DeleteContact } from '../redux/contact.action';
+import { DeleteContact } from '../redux/actions/contact.action';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-
 
 function contactDetail(){
     const route = useRoute()
     const navigation = useNavigation()
     const dispatch = useDispatch()
-    const contacts = useSelector((state) => state.ContactReducer)
 
     const[firstname, setFirstname] = useState('')
     const[lastname, setLastname] = useState('')
@@ -34,7 +30,7 @@ function contactDetail(){
     function backtoList(){
         navigation.navigate('list_contact')
     }
-    
+
     function deletEContact(){
         Alert.alert(
             "hapus kontak?",
@@ -46,20 +42,7 @@ function contactDetail(){
                 },
                 {
                     text: "OK", onPress: () => {
-                    deleteContact(id).then(response => {
-                        const showToast = (text) => {
-                            ToastAndroid.show(text, ToastAndroid.SHORT)
-                        }
-                        if(response.message === "contact deleted"){
-                            const contact = {
-                                id: id
-                            }
-                            dispatch(DeleteContact(contact))
-                            showToast(response.message)
-                        }
-                    }, (error) => {
-                        ToastAndroid.show(error.response.data.message, ToastAndroid.SHORT)
-                    })
+                        dispatch(DeleteContact(id))
                     }
                 }
             ]
@@ -67,7 +50,7 @@ function contactDetail(){
     }
 
     useEffect(() => {
-        getContactId(route.params).then(res => {
+        getContactDetail(route.params).then(res => {
             setFirstname(res.data.firstName)
             setLastname(res.data.lastName)
             const age = res.data.age
@@ -85,7 +68,7 @@ function contactDetail(){
             </View>
 
             <View>
-                {exe == false? 
+                {!exe ? 
                         <View>
                             {photo != "N/A" ?
                                 <Image
